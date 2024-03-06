@@ -2,18 +2,11 @@
   "name": "@react-native-oh-tpl/react-native-pull",
   "version": "2.0.4-0.0.1",
   "description": "PullView & PullList component in React Native for both Android and iOS, pull to refresh",
-  "main": "lib/commonjs/index",
-  "module": "lib/module/index",
-  "react-native": "src/index",
+  "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "source": "src/index",
-  "files": [
-    "harmony",
-    "lib",
-    "src"
-  ],
+  "source": "index",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/code-artisan/react-native-pull.git"
@@ -33,15 +26,7 @@
   "harmony": {
     "alias": "react-native-pull"
   },
-  "react-native-builder-bob": {
-    "source": "src",
-    "output": "lib",
-    "targets": [
-      "commonjs",
-      "module"
-    ]
-  },
-  "author": "zhuqiaolin",
+  "author": "architect.bian",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/code-artisan/react-native-pull/issues"

@@ -12,8 +12,8 @@ import {
     ActivityIndicator
 } from 'react-native';
 
-import i18n from '../i18n/index';
-import styles from '../style/index';
+import i18n from './i18n';
+import styles from './style/index.js';
 
 const pullOkMargin = 100; //下拉到ok状态时topindicator距离顶部的距离
 const defaultDuration = 300;
