@@ -15,14 +15,13 @@
 
 
 
-
 > [!tip] [Github 地址](https://github.com/react-native-oh-library/react-native-pull)
 
 ## 简介
 
 react-native-pull包含两个（`PullView` & `PullList`）可以实现`下拉刷新`的react native组件，可支持android & ios，简单易用！
 
-纯js代码，基于`ScrollView` & `ListView`封装. 比scrollview & ListView更强大，有三个下拉状态: **pulling**, **pullok**, **pullrelease**. `PullView`可以让你使用refreshControl或提供的相关属性实现类似于scrollview的pull-to-refresh. `PullList`可以让你使用`ListView`的所有属性。你也可以使用`topIndicatorRender `和`onPushing`方法实现带有动画效果的自定义的topIndicator头部。
+纯js代码，基于`ScrollView` & `FlatList`封装. 比scrollview & FlatList更强大，有三个下拉状态: **pulling**, **pullok**, **pullrelease**. `PullView`可以让你使用refreshControl或提供的相关属性实现类似于scrollview的pull-to-refresh. `PullList`可以让你使用`FlatList`的所有属性。你也可以使用`topIndicatorRender `和`onPushing`方法实现带有动画效果的自定义的topIndicator头部。
 
 ## 安装与使用
 
