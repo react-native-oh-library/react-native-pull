@@ -25,7 +25,7 @@ react-native-pull包含两个（`PullView` & `PullList`）可以实现`下拉刷
 
 ## 安装与使用
 
-请到三方库的地址查看配套的版本信息：[@react-native-oh-tpl/react-native-pull](https://github.com/react-native-oh-library/react-native-pull)，并下载适用版本的 tgz 包。
+请到三方库的地址查看配套的版本信息：[@react-native-oh-tpl/react-native-pull/releases](https://github.com/react-native-oh-library/react-native-pull/releases)，并下载适用版本的 tgz 包。
 
 进入到工程目录并输入以下命令：
 
@@ -343,7 +343,7 @@ export default PullListDemo;
 
 要使用此库，需要使用正确的 React-Native 和 RNOH 版本。另外，还需要使用配套的 DevEco Studio 和 手机 ROM。
 
-请到三方库相应的发布地址查看版本信息：[@react-native-oh-tpl/react-native-pull](https://github.com/react-native-oh-library/react-native-pull)
+请到三方库相应的发布地址查看版本信息：[@react-native-oh-tpl/react-native-pull/releases](https://github.com/react-native-oh-library/react-native-pull/releases)
 
 ## 属性配置项
 
@@ -355,7 +355,7 @@ export default PullListDemo;
 
 | Name                 | Description                                                  | Type     | Required | Platform    | HarmonyOS Support |
 | -------------------- | ------------------------------------------------------------ | -------- | -------- | ----------- | ----------------- |
-| `style`              | 设置组件样式，比如可以设置width/height/backgroudColor等      | Style    | no       | android,ios | yse               |
+| `style`              | 设置组件样式，比如可以设置width/height/backgroudColor等      | Style    | no       | android,ios | yes               |
 | `onPulling`          | 处于`pulling`状态时执行的方法                                | function | no       | android,ios | yes               |
 | `onPullOk`           | 处于`pullok`状态时执行的方法                                 | function | no       | android,ios | yes               |
 | `onPullRelease`      | 处于`pullrelease`状态时执行的方法，接受一个参数：`resolve`，最后执行完操作后应该调用`resolve()`。 | function | no       | android,ios | yes               |
