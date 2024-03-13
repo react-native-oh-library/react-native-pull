@@ -1,27 +1,35 @@
-﻿> 模板版本：v0.1.3
+> 模板版本：v0.1.3
 
 <p align="center">
-  <h1 align="center"> <code>react-native-pull</code> </h1>
+<h1 align="center"> <code>react-native-pull</code> </h1>
 </p>
 <p align="center">
-    <a href="https://github.com/react-native-oh-library/react-native-pull">
-        <img src="https://img.shields.io/badge/platforms-android%20|%20ios%20|%20harmony%20-lightgrey.svg" alt="Supported platforms" />
-    </a>
-        <a href="https://github.com/react-native-oh-library/react-native-pull/LICENCE">
-        <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License" />
-    </a>
+ <a href="https://github.com/react-native-oh-library/react-native-pull">
+     <img src="https://img.shields.io/badge/platforms-android%20|%20ios%20|%20harmony%20-lightgrey.svg" alt="Supported platforms" />
+ </a>
+     <a href="https://github.com/react-native-oh-library/react-native-pull/LICENCE">
+     <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License" />
+ </a>
 </p>
+
+
 
 
 > [!tip] [Github 地址](https://github.com/react-native-oh-library/react-native-pull)
 
+## 简介
+
+react-native-pull包含两个（`PullView` & `PullList`）可以实现`下拉刷新`的react native组件，可支持android & ios，简单易用！
+
+纯js代码，基于`ScrollView` & `FlatList`封装. 比scrollview & FlatList更强大，有三个下拉状态: **pulling**, **pullok**, **pullrelease**. `PullView`可以让你使用refreshControl或提供的相关属性实现类似于scrollview的pull-to-refresh. `PullList`可以让你使用`FlatList`的所有属性。你也可以使用`topIndicatorRender `和`onPushing`方法实现带有动画效果的自定义的topIndicator头部。
+
 ## 安装与使用
 
-请到三方库的 Releases 发布地址查看配套的版本信息：[@react-native-oh-tpl/react-native-pull Releases](https://github.com/react-native-oh-library/react-native-pull/releases)，并下载适用版本的 tgz 包。
+请到三方库的地址查看配套的版本信息：[@react-native-oh-tpl/react-native-pull/releases](https://github.com/react-native-oh-library/react-native-pull/releases)，并下载适用版本的 tgz 包。
 
 进入到工程目录并输入以下命令：
 
->[!TIP] # 处替换为 tgz 包的路径
+> [!TIP] # 处替换为 tgz 包的路径
 
 <!-- tabs:start -->
 
@@ -39,257 +47,105 @@ yarn add @react-native-oh-tpl/react-native-pull@file:#
 
 <!-- tabs:end -->
 
-快速使用：
+下面的demo代码展示了这个库的基本使用场景：
 
->[!WARNING] 使用时 import 的库名不变。
->
->PullViewDemo
+> [!WARNING] 使用时 import 的库名不变。
 
-![](https://raw.githubusercontent.com/greatbsky/react-native-pull-demo/master/PullViewDemo/image/demo.gif)
+**PullViewDemo**
 
-```jsx
+![img](https://raw.githubusercontent.com/greatbsky/react-native-pull-demo/master/PullViewDemo/image/demo.gif)
+
+
+
+> 代码示例
+
+```js
 import React, { Component, useState } from 'react';
 import {
-  StyleSheet,
-  Text,
-  View,
-  ActivityIndicator,
-  Dimensions,
+StyleSheet,
+Text,
+View,
+ActivityIndicator,
+Dimensions,
 } from 'react-native';
 
 import {PullView} from 'react-native-pull';
 
 const PullViewDemo = () => {
 
-   const [count, setCount] = useState(0);
-   let testObj = {
-    pulling:null,
-    pullok:null,
-    pullrelease:null,
-    pushing:null,
-    refresh:null,
-    isPullEnd:null
-   };
-   const [data, setData] = useState(testObj);
-   const onPulling = () => {
-      testObj.pulling='pulling--------->'
-      setData(testObj)
-   };
-   const onPullOk = () => {
-      testObj.pullok='pullok--------->'
-      setData(testObj)
-   };
-   const onPullRelease = (resolve) => {
-        //do something
-        testObj.pullrelease='pullrelease--------->'
-        setData(testObj)
-        setTimeout(() => {
-            resolve();
-        }, 3000);
-    };
-    const onPushing = (gesturePosition) => {
-        testObj.pushing= 'x:' + gesturePosition.x + '------' + 'y：' + gesturePosition.y
-        setData(testObj)
-    };
+const [count, setCount] = useState(0);
+let testObj = {
+ pulling:null,
+ pullok:null,
+ pullrelease:null,
+ pushing:null,
+ refresh:null,
+ isPullEnd:null
+};
+const [data, setData] = useState(testObj);
+const onPulling = () => {
+   testObj.pulling='pulling--------->'
+   setData(testObj)
+};
+const onPullOk = () => {
+   testObj.pullok='pullok--------->'
+   setData(testObj)
+};
+const onPullRelease = (resolve) => {
+     //do something
+     testObj.pullrelease='pullrelease--------->'
+     setData(testObj)
+     setTimeout(() => {
+         resolve();
+     }, 3000);
+ };
+ const onPushing = (gesturePosition) => {
+     testObj.pushing= 'x:' + gesturePosition.x + '------' + 'y：' + gesturePosition.y
+     setData(testObj)
+ };
 	const topIndicatorRender = (pulling, pullok, pullrelease) => {
-        if (pulling) {
-            setCount('下拉刷新pulling...')
-        } else if (pullok) {
-            setCount('松开刷新pullok......')
-        } else if (pullrelease) {
-            setCount('玩命刷新中pullrelease......')
-        }
+     if (pulling) {
+         setCount('下拉刷新pulling...')
+     } else if (pullok) {
+         setCount('松开刷新pullok......')
+     } else if (pullrelease) {
+         setCount('玩命刷新中pullrelease......')
+     }
 		return (
-            <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
-                <ActivityIndicator size="small" color="gray" />
-                {pulling ? <Text>{count}</Text> : null}
-                {pullok ? <Text>{count}</Text> : null}
-                {pullrelease ? <Text>{count}</Text> : null}
-    		</View>
-        );
+         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+             <ActivityIndicator size="small" color="gray" />
+             {pulling ? <Text>{count}</Text> : null}
+             {pullok ? <Text>{count}</Text> : null}
+             {pullrelease ? <Text>{count}</Text> : null}
+ 		</View>
+     );
 	};
 
-    return (
-      <View style={[styles.container]}>
+ return (
+   <View style={[styles.container]}>
 		<PullView style={{width: Dimensions.get('window').width}}
-              onPulling={onPulling}
-              onPullOk={onPullOk}
-              isPullEnd={true}
-              onPullRelease={onPullRelease}
-              onPushing={onPushing}
-              topIndicatorRender={topIndicatorRender}
-              topIndicatorHeight={60}>
+           onPulling={onPulling}
+           onPullOk={onPullOk}
+           isPullEnd={true}
+           onPullRelease={onPullRelease}
+           onPushing={onPushing}
+           topIndicatorRender={topIndicatorRender}
+           topIndicatorHeight={60}>
 			<View style={{backgroundColor: '#eeeeee'}}>
 			    <Text>1***************</Text>
-                <Text>onPulling:{testObj.pulling}</Text>
-                <Text>3</Text>
-                <Text>onPullOk:{testObj.pullok}</Text>
-                <Text>5</Text>
-                <Text>onPullRelease:{testObj.pullrelease}</Text>
-                <Text>7</Text>
-                <Text>onPushing:{testObj.pushing}</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-                <Text>1***************</Text>
-                <Text>2</Text>
-                <Text>3</Text>
-                <Text>4</Text>
-                <Text>5</Text>
-                <Text>6</Text>
-                <Text>7</Text>
-                <Text>8</Text>
-                <Text>9</Text>
-                <Text>10</Text>
-                <Text>11</Text>
-                <Text>12</Text>
-                <Text>13</Text>
-                <Text>14</Text>
-                <Text>15</Text>
-            </View>
-        </PullView>
-      </View>
-    );
-};
+             <Text>onPulling:{testObj.pulling}</Text>
+             <Text>3</Text>
+             <Text>onPullOk:{testObj.pullok}</Text>
+             <Text>5</Text>
+             <Text>onPullRelease:{testObj.pullrelease}</Text>
+             <Text>7</Text>
+             <Text>onPushing:{testObj.pushing}</Text>
+             <Text>9</Text>
+         </View>
+     </PullView>
+   </View>
+ );
+           > };
 export default PullViewDemo;
 const styles = StyleSheet.create({
   container: {
@@ -298,22 +154,16 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
 });
 ```
 
-PullListDemo
+**PullListDemo**
 
 ![img](https://raw.githubusercontent.com/greatbsky/react-native-pull-demo/master/PullListDemo/image/demo.gif)
+
+
+
+> 代码示例
 
 ```jsx
 import React, { Component, useState } from 'react';
@@ -339,18 +189,6 @@ const PullListDemo = () => {
    const [count, setCount] = useState(0);
    const [data, setData] = useState(testObj);
     const [stateList, setStateList] = useState([
-      {
-        id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-        title: 'First Item',
-      },
-      {
-        id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-        title: 'Second Item',
-      },
-      {
-        id: '58694a0f-3da1-471f-bd96-145571e29d72',
-        title: 'Third Item',
-      },
       {
         id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb2cba',
         title: 'First Item1',
@@ -431,7 +269,7 @@ const PullListDemo = () => {
     }
 
    const renderRow = ({item}) => {
-//     console.log('renderRow', item.title)
+     console.log('renderRow', item.title)
       return (
           <View style={{height: 50, backgroundColor: '#fafafa', alignItems: 'center', justifyContent: 'center'}}>
               <Text>{item.title}</Text>
@@ -440,9 +278,6 @@ const PullListDemo = () => {
     }
 
    const renderFooter = () => {
-      //if(this.state.nomore) {
-       //   return null;
-      //}
       return (
           <View style={{height: 100}}>
               <ActivityIndicator />
@@ -496,29 +331,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
-  welcome: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
-  },
-  instructions: {
-    textAlign: 'center',
-    color: '#333333',
-    marginBottom: 5,
-  },
 });
 
 export default PullListDemo;
 
 ```
-
-
-
-## Link
-
-目前鸿蒙暂不支持 AutoLink，所以 Link 步骤需要手动配置。
-
-首先需要使用 DevEco Studio 打开项目里的鸿蒙工程 `harmony`
 
 ## 约束与限制
 
@@ -526,9 +343,9 @@ export default PullListDemo;
 
 要使用此库，需要使用正确的 React-Native 和 RNOH 版本。另外，还需要使用配套的 DevEco Studio 和 手机 ROM。
 
-请到三方库相应的 Releases 发布地址查看 Release 配套的版本信息：[@react-native-oh-tpl/react-native-pull Releases](https://github.com/react-native-oh-library/react-native-pull/releases)
+请到三方库相应的发布地址查看版本信息：[@react-native-oh-tpl/react-native-pull/releases](https://github.com/react-native-oh-library/react-native-pull/releases)
 
-## 更多配置项
+## 属性配置项
 
 > [!tip] "Platform"列表示该属性在原三方库上支持的平台。
 
@@ -538,17 +355,16 @@ export default PullListDemo;
 
 | Name                 | Description                                                  | Type     | Required | Platform    | HarmonyOS Support |
 | -------------------- | ------------------------------------------------------------ | -------- | -------- | ----------- | ----------------- |
-| `style`              | 设置组件样式，比如可以设置width/height/backgroudColor等      | Style    | no       | android,ios | partially         |
+| `style`              | 设置组件样式，比如可以设置width/height/backgroudColor等      | Style    | no       | android,ios | yes               |
 | `onPulling`          | 处于`pulling`状态时执行的方法                                | function | no       | android,ios | yes               |
 | `onPullOk`           | 处于`pullok`状态时执行的方法                                 | function | no       | android,ios | yes               |
 | `onPullRelease`      | 处于`pullrelease`状态时执行的方法，接受一个参数：`resolve`，最后执行完操作后应该调用`resolve()`。 | function | no       | android,ios | yes               |
 | `onPushing`          | 当从下往上推时执行的方法，接受一个参数：`gesturePosition`。gesturePosition是json格式{x, y}对象，当从上往下拉时gesturePosition.y > 0，当从下往上推时gesturePosition.y < 0。 | function | no       | android,ios | yes               |
 | `topIndicatorRender` | 顶部刷新指示组件的渲染方法, 接受4个参数: `ispulling`, `ispullok`, `ispullrelease`，`gesturePosition`，你可以使用`gesturePosition`定义动画头部。 | function | no       | android,ios | yes               |
 | `topIndicatorHeight` | 顶部刷新指示组件的高度, 若定义了topIndicatorRender则同时需要此属性 | number   | no       | android,ios | yes               |
-| `isPullEnd`          | 是否已经下拉结束，若为true则隐藏顶部刷新指示组件，非必须     | boolean  | no       | android,ios | partially         |
+| `isPullEnd`          | 是否已经下拉结束，若为true则隐藏顶部刷新指示组件，非必须     | boolean  | no       | android,ios | yes               |
 | `onRefresh`          | 开始刷新时调用的方法                                         | function | no       | android,ios | yes               |
 | `refreshing`         | 指示是否正在刷新                                             | function | no       | android,ios | yes               |
-
 
 ## 遗留问题
 
@@ -557,3 +373,4 @@ export default PullListDemo;
 ## 开源协议
 
 本项目基于 [The MIT License (MIT)](https://github.com/react-native-oh-library/react-native-pull) ，请自由地享受和参与开源。
+
