@@ -1,7 +1,7 @@
 {
   "name": "@react-native-oh-tpl/react-native-pull",
   "version": "2.0.4-0.0.1",
-  "description": "PullView & PullList component in React Native for both Android and iOS, pull to refresh",
+  "description": "PullView & PullList component in React Native for both Android/iOS/Harmony, pull to refresh",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
