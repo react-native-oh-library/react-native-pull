@@ -110,14 +110,15 @@ export default class extends Component {
                 }
 
                 this.setFlag(flagPulling);
-            } else { //下拉到位
-                if (!this.state.pullok) {
+            }  else if (gesture.dy >= this.topIndicatorHeight + this.pullOkMargin){ //下拉到位
+                if (!this.flag.pullok) {
                     if (this.props.onPullOk) {
                         this.props.onPullOk();
                     }
+                    this.setFlag(flagPullok);
                 }
 
-                this.setFlag(flagPullok);
+
             }
         }
     }
