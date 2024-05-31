@@ -72,7 +72,6 @@ export default class extends Component {
     }
     onMoveShouldSetPanResponder(e, gesture) {
         console.log('onMoveShouldSetPanResponder----------->', gesture.dy)
-        // this.scrollViewRef.current?.scrollTo({ x: 0, y:  Math.abs(gesture.dy), animated: true })
         if( gesture.dy>0){
             this.setState({
                 scrollEnabled: false,
@@ -80,8 +79,7 @@ export default class extends Component {
         }else{
             this.setState({
                 scrollEnabled: true,
-            });     
-            // this.scrollTo({ x: 0, y: Math.abs(gesture.dy), animated: false })
+            });
         }
         if (!this.pullable || !isVerticalGesture(gesture.dx, gesture.dy)) { // 不使用pullable,或非向上 或向下手势不响应
             return false;
