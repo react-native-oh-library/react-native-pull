@@ -1,6 +1,6 @@
 ﻿'use strict';
 
-import React, { Component } from 'react';
+import React, { Component, useRef } from 'react';
 import {
     View,
     Text,
@@ -58,8 +58,8 @@ export default class extends Component {
         this.renderTopIndicator = this.renderTopIndicator.bind(this);
         this.defaultTopIndicatorRender = this.defaultTopIndicatorRender.bind(this);
         this.panResponder = PanResponder.create({
-            onStartShouldSetPanResponder: this.onShouldSetPanResponder.bind(this),
-            onMoveShouldSetPanResponder: this.onShouldSetPanResponder.bind(this),
+            onStartShouldSetPanResponder: this.onStartShouldSetPanResponder.bind(this),
+            onMoveShouldSetPanResponder: this.onMoveShouldSetPanResponder.bind(this),
             onPanResponderGrant: () => { },
             onPanResponderMove: this.onPanResponderMove.bind(this),
             onPanResponderRelease: this.onPanResponderRelease.bind(this),
@@ -67,12 +67,25 @@ export default class extends Component {
         });
         this.setFlag(defaultFlag);
     }
-
-    onShouldSetPanResponder(e, gesture) {
+    onStartShouldSetPanResponder(e, gesture) {
+        console.log('onStartShouldSetPanResponder----------->', gesture.dy)
+    }
+    onMoveShouldSetPanResponder(e, gesture) {
+        console.log('onMoveShouldSetPanResponder----------->', gesture.dy)
+        // this.scrollViewRef.current?.scrollTo({ x: 0, y:  Math.abs(gesture.dy), animated: true })
+        if( gesture.dy>0){
+            this.setState({
+                scrollEnabled: false,
+            });
+        }else{
+            this.setState({
+                scrollEnabled: true,
+            });     
+            // this.scrollTo({ x: 0, y: Math.abs(gesture.dy), animated: false })
+        }
         if (!this.pullable || !isVerticalGesture(gesture.dx, gesture.dy)) { // 不使用pullable,或非向上 或向下手势不响应
             return false;
         }
-
         if (!this.state.scrollEnabled) {
             this.lastY = this.state.pullPan.y._value;
             return gesture.dy >= 0;
@@ -85,18 +98,24 @@ export default class extends Component {
     }
 
     onPanResponderMove(e, gesture) {
+        console.log('onPanResponderMove----------->', gesture.dy)
         this.gesturePosition = {
             x: this.defaultXY.x,
             y: gesture.dy
         };
-
         if (isUpGesture(gesture.dx, gesture.dy)) { //向上滑动
+            this.setState({
+                scrollEnabled: true,
+            });  
             if (this.isPullState()) {
                 this.resetDefaultXYHandler();
             } else if (this.props.onPushing) {
                 this.props.onPushing(this.gesturePosition)
             }
         } else if (isDownGesture(gesture.dx, gesture.dy)) { //下拉
+            this.setState({
+                scrollEnabled: false,
+            });
             this.state.pullPan.setValue({
                 x: this.defaultXY.x,
                 y: this.lastY + gesture.dy / 2
@@ -140,7 +159,8 @@ export default class extends Component {
             Animated.timing(this.state.pullPan, {
                 toValue: { x: 0, y: 0 },
                 easing: Easing.linear,
-                duration: this.duration
+                duration: this.duration,
+                useNativeDriver:false
             }).start();
         }
     }
@@ -181,7 +201,8 @@ export default class extends Component {
         Animated.timing(this.state.pullPan, {
             toValue: this.defaultXY,
             easing: Easing.linear,
-            duration: this.duration
+            duration: this.duration,
+            useNativeDriver:false
         }).start();
     }
 
