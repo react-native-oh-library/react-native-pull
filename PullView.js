@@ -65,7 +65,7 @@ export default class extends Pullable {
 
     getScrollable(refreshControl) {
         return (
-            <ScrollView ref={(c) => {this.scroll = c;}} refreshControl={refreshControl} onScroll={this.onScroll}>
+            <ScrollView ref={(c) => {this.scroll = c;}} scrollEnabled={this.state.scrollEnabled} refreshControl={refreshControl} onScroll={this.onScroll}>
                 {this.props.children}
             </ScrollView>
         );

@@ -1,91 +1,485 @@
-﻿# react-native-pull
+<!-- {% raw %} -->
 
-[![reactnative Version](https://img.shields.io/badge/reactnative-V0.42.0%2B-brightgreen.svg)](http://facebook.github.io/react-native/versions.html)
-[![NPM Version](https://img.shields.io/npm/v/react-native-pull.svg?style=flat-square)](https://www.npmjs.com/package/react-native-pull)
-[![NPM Downloads](https://img.shields.io/npm/dm/react-native-pull.svg?style=flat-square)](https://www.npmjs.com/package/react-native-pull)
-[![GitHub issues](https://img.shields.io/github/issues/greatbsky/react-native-pull.svg)](https://github.com/greatbsky/react-native-pull/issues)
-[![GitHub stars](https://img.shields.io/github/stars/greatbsky/react-native-pull.svg)](https://github.com/greatbsky/react-native-pull/stargazers)
-[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://raw.githubusercontent.com/greatbsky/react-native-pull/master/LICENSE)
-[![Twitter](https://img.shields.io/twitter/url/https/github.com/greatbsky/react-native-pull.svg?style=social)](https://twitter.com/intent/tweet?text=Wow:&url=%5Bobject%20Object%5D)
+> 模板版本：v0.2.2
 
-Announcement: Due to work changed, I have no more time to maintain the project. I suggest that you need to directly integrate the code and customize the changes. Sorry...
+<p align="center">
+<h1 align="center"> <code>react-native-pull</code> </h1>
+</p>
+<p align="center">
+ <a href="https://github.com/greatbsky/react-native-pull/blob/master">
+     <img src="https://img.shields.io/badge/platforms-android%20|%20ios%20|%20harmony%20-lightgrey.svg" alt="Supported platforms" />
+ </a>
+     <a href="https://github.com/greatbsky/react-native-pull/blob/master/LICENSE">
+     <img src="https://img.shields.io/badge/license-MIT-green.svg" alt="License" />
+ </a>
+</p>
 
-  This is  the `PullView` & `PullList` component in React Native both for Android and iOS, pull to refresh, very useful &amp; easily &amp; quickly!
 
-  This is a JavaScript-only implementation of `PullView` & `PullList` in React Native. `PullView` can host multiple components and views like `ScrollView`, `PullList` can efficient display of vertically scrolling lists of changing data like `ListView`. Better than ScrollView & ListView  in Android, this `PullView` & `PullList` can be pull down, then show top indicator, the top indicator have three state: **pulling**, **pullok**, **pullrelease**. And more, `PullView` also can make you use refreshControl to provide pull-to-refresh same as scrollview. `PullList` also can make you use any props like ListView. You also can design yourself topIndicator with animation during the process of pulling or pushing using function `topIndicatorRender` and `onPushing`.
 
-`PullView` & `PullList` demo project: https://github.com/greatbsky/react-native-pull-demo
 
-## `PullView` Demo
+> [!tip] [Github 地址](https://github.com/react-native-oh-library/react-native-pull)
 
-  ![](https://raw.githubusercontent.com/greatbsky/react-native-pull-demo/master/PullViewDemo/image/demo.gif)
+## 简介
 
-## `PullView` Usage
-  1. Run `npm install react-native-pull@latest --save`
-  2. Code like this:
-  ```
-  import {PullView} from 'react-native-pull';
+react-native-pull包含两个（`PullView` & `PullList`）可以实现`下拉刷新`的react native组件，可支持android & ios，简单易用！
 
-  onPullRelease(resolve) {
-    //do something
-    setTimeout(() => {
+纯js代码，基于`ScrollView` & `FlatList`封装. 比scrollview & FlatList更强大，有三个下拉状态: **pulling**, **pullok**, **pullrelease**. `PullView`可以让你使用refreshControl或提供的相关属性实现类似于scrollview的pull-to-refresh. `PullList`可以让你使用`FlatList`的所有属性。你也可以使用`topIndicatorRender `和`onPushing`方法实现带有动画效果的自定义的topIndicator头部。
+
+## 安装与使用
+
+请到三方库的地址查看配套的版本信息：[@react-native-oh-tpl/react-native-pull/releases](https://github.com/react-native-oh-library/react-native-pull/releases)，并下载适用版本的 tgz 包。
+
+进入到工程目录并输入以下命令：
+
+> [!TIP] # 处替换为 tgz 包的路径
+
+<!-- tabs:start -->
+
+#### **npm**
+
+```bash
+npm install @react-native-oh-tpl/react-native-pull@file:#
+```
+
+#### **yarn**
+
+```bash
+yarn add @react-native-oh-tpl/react-native-pull@file:#
+```
+
+<!-- tabs:end -->
+
+下面的demo代码展示了这个库的基本使用场景：
+
+> [!WARNING] 使用时 import 的库名不变。
+
+**PullViewDemo**
+
+> 代码示例
+
+```js
+import React, { Component, useState } from 'react';
+import {
+StyleSheet,
+Text,
+View,
+ActivityIndicator,
+Dimensions,
+} from 'react-native';
+
+import {PullView} from 'react-native-pull';
+
+const PullViewDemo = () => {
+
+const [count, setCount] = useState(0);
+let testObj = {
+ pulling:null,
+ pullok:null,
+ pullrelease:null,
+ pushing:null,
+ refresh:null,
+ isPullEnd:null
+};
+const [data, setData] = useState(testObj);
+const onPulling = () => {
+   testObj.pulling='pulling--------->'
+   setData(testObj)
+};
+const onPullOk = () => {
+   testObj.pullok='pullok--------->'
+   setData(testObj)
+};
+const onPullRelease = (resolve) => {
+     //do something
+     testObj.pullrelease='pullrelease--------->'
+     setData(testObj)
+     setTimeout(() => {
+         resolve();
+     }, 3000);
+ };
+ const onPushing = (gesturePosition) => {
+     testObj.pushing= 'x:' + gesturePosition.x + '------' + 'y：' + gesturePosition.y
+     setData(testObj)
+ };
+	const topIndicatorRender = (pulling, pullok, pullrelease) => {
+     if (pulling) {
+         setCount('下拉刷新pulling...')
+     } else if (pullok) {
+         setCount('松开刷新pullok......')
+     } else if (pullrelease) {
+         setCount('玩命刷新中pullrelease......')
+     }
+		return (
+         <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+             <ActivityIndicator size="small" color="gray" />
+             {pulling ? <Text>{count}</Text> : null}
+             {pullok ? <Text>{count}</Text> : null}
+             {pullrelease ? <Text>{count}</Text> : null}
+ 		</View>
+     );
+	};
+
+ return (
+   <View style={[styles.container]}>
+		<PullView style={{width: Dimensions.get('window').width}}
+           onPulling={onPulling}
+           onPullOk={onPullOk}
+           isPullEnd={true}
+           onPullRelease={onPullRelease}
+           onPushing={onPushing}
+           topIndicatorRender={topIndicatorRender}
+           topIndicatorHeight={60}>
+			<View style={{backgroundColor: '#eeeeee'}}>
+			 <Text>1***************</Text>
+             <Text>onPulling:{testObj.pulling}</Text>
+             <Text>3</Text>
+             <Text>onPullOk:{testObj.pullok}</Text>
+             <Text>5</Text>
+             <Text>onPullRelease:{testObj.pullrelease}</Text>
+             <Text>7</Text>
+             <Text>onPushing:{testObj.pushing}</Text>
+             <Text>9</Text>
+         </View>
+     </PullView>
+   </View>
+ );
+           > };
+export default PullViewDemo;
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#F5FCFF',
+  },
+});
+```
+
+**PullListDemo**
+
+> 代码示例
+
+```jsx
+import React, { Component, useState } from 'react';
+import {
+  StyleSheet,
+  Text,
+  View,
+  ActivityIndicator,
+  Dimensions,
+  RefreshControl
+} from 'react-native';
+import {PullList} from 'react-native-pull';
+
+const PullListDemo = () => {
+  let testObj = {
+    pulling:null,
+    pullok:null,
+    pullrelease:null,
+    pushing:null,
+    refresh:null,
+    isPullEnd:null
+   };
+
+   const [count, setCount] = useState(0);
+   const [data, setData] = useState(testObj);
+    const [stateList, setStateList] = useState(
+         [
+                 {
+                   id: 1,
+                   title: '------>Item1',
+                 },
+                 {
+                   id: 2,
+                   title: '------>Item2',
+                 },
+                 {
+                   id: 3,
+                   title: '------>Item3',
+                 },
+                 {
+                   id: 4,
+                   title: '------>Item4',
+                 },
+                 {
+                   id: 5,
+                   title: '------>Item5',
+                 },
+                 {
+                   id: 6,
+                   title: '------>Item6',
+                 },
+                 {
+                   id: 7,
+                   title: '------>Item7',
+                 },
+                 {
+                   id: 8,
+                   title: '------>Item8',
+                 },
+                 {
+                   id: 9,
+                   title: '------>Item9',
+                 },
+                  {
+                    id: 10,
+                    title: '------>Item10',
+                  },
+                  {
+                    id: 11,
+                    title: '------>Item11',
+                  },
+                  {
+                    id: 12,
+                    title: '------>Item12',
+                  },
+               ]
+    );
+
+   const onPulling = () => {
+      testObj.pulling='pulling--------->'
+      setData(testObj)
+   };
+
+   const onPullOk = () => {
+      testObj.pullok='pullok--------->'
+      setData(testObj)
+   };
+
+   const onPullRelease = (resolve) => {
+        //do something
+        testObj.pullrelease='pullrelease--------->'
+        setData(testObj)
+        setTimeout(() => {
+         setStateList([
+                                       {
+                                         id: 1,
+                                         title: '------>Item1',
+                                       },
+                                       {
+                                         id: 2,
+                                         title: '------>Item2',
+                                       },
+                                       {
+                                         id: 3,
+                                         title: '------>Item3',
+                                       },
+                                       {
+                                         id: 4,
+                                         title: '------>Item4',
+                                       },
+                                       {
+                                         id: 5,
+                                         title: '------>Item5',
+                                       },
+                                       {
+                                         id: 6,
+                                         title: '------>Item6',
+                                       },
+                                       {
+                                         id: 7,
+                                         title: '------>Item7',
+                                       },
+                                       {
+                                         id: 8,
+                                         title: '------>Item8',
+                                       },
+                                       {
+                                         id: 9,
+                                         title: '------>Item9',
+                                       },
+                                        {
+                                          id: 10,
+                                          title: '------>Item10',
+                                        },
+                                        {
+                                          id: 11,
+                                          title: '------>Item11',
+                                        },
+                                        {
+                                          id: 12,
+                                          title: '------>Item12',
+                                        },
+                                     ]);
             resolve();
         }, 3000);
-  }
-
-  <PullView onPullRelease={this.onPullRelease}>
-    //<Children />
-  </PullView>
-  ```
-  3. Full demo code: https://github.com/greatbsky/react-native-pull-demo/blob/master/PullViewDemo/app.js
+    };
 
 
-## `PullList` Demo
+    const onPushing = (gesturePosition) => {
+        testObj.pushing= 'x:' + gesturePosition.x + '------' + 'y：' + gesturePosition.y
+        setData(testObj)
+    };
 
-  ![](https://raw.githubusercontent.com/greatbsky/react-native-pull-demo/master/PullListDemo/image/demo.gif)
+    const topIndicatorRender = (pulling, pullok, pullrelease) => {
+      if (pulling) {
+          setCount('当前PullList状态: pulling...')
+      } else if (pullok) {
+          setCount('当前PullList状态: pullok......')
+      } else if (pullrelease) {
+          setCount('当前PullList状态: pullrelease......')
+      }
 
-## `PullList` Usage
-  1. Run `npm install react-native-pull@latest --save`
-  2. Code like this:
-  ```
-    import {PullList} from 'react-native-pull';
+  return (
+      <View style={{flexDirection: 'row', justifyContent: 'center', alignItems: 'center', height: 60}}>
+          <ActivityIndicator size="small" color="gray" />
+          {pulling ? <Text>{count}</Text> : null}
+          {pullok ? <Text>{count}</Text> : null}
+          {pullrelease ? <Text>{count}</Text> : null}
+      </View>
+  );
+};
 
-    onPullRelease(resolve) {
-      //do something
-      setTimeout(() => {
-            resolve();
-        }, 3000);
+
+    const renderHeader = () => {
+      return (
+          <View style={{height: 50, backgroundColor: '#eeeeee', alignItems: 'center', justifyContent: 'center'}}>
+              <Text style={{fontWeight: 'bold'}}>This is header</Text>
+          </View>
+      );
     }
 
-    <PullList onPullRelease={this.onPullRelease} {...and some ListView Props}/>
-  ```
-  3. Full demo code: https://github.com/greatbsky/react-native-pull-demo/blob/master/PullListDemo/app.js
+   const renderRow = ({item}) => {
+      return (
+          <View style={{height: 50, backgroundColor: '#fafafa', alignItems: 'center', justifyContent: 'center'}}>
+              <Text>{item.title}</Text>
+          </View>
+      );
+    }
 
+   const renderFooter = () => {
+      return (
+          <View style={{height: 100}}>
+              <ActivityIndicator />
+          </View>
+      );
+    }
 
-## `PullView` & `PullList`  configuration
+   const loadMore = () => {
+      const list = []
+      const num = stateList.length
+        for(var i = 0; i < 5; i++) {
+            list.push({
+                id: (i + 1 + num) + '',
+                title: `------>Item${(i+num+1)}`,
+            })
+        }
+       setTimeout(() => {
+          setStateList([...stateList,...list]);
+        }, 1000);
+    }
 
-**Pull down props for `PullView` &amp; `PullList`**
+    const [refreshing, setRefreshing] = useState(false)
+    const onRefresh = () => {
+      // 加载数据的逻辑
+      setRefreshing(true)
+      // 数据加载完成后
+      setTimeout(() => {
+        setRefreshing(false)
+      }, 2000); // 假设数据加载需要2秒
+    };
+    const refreshControl = (
+      <RefreshControl
+        refreshing={refreshing}
+        onRefresh={onRefresh}
+        tintColor="#ff0000" // 可选，设置刷新指示器的颜色
+        title="Loading..." // 可选，设置刷新时显示的文本
+        colors={['#ff0000', '#00ff00', '#0000ff']} // 可选，设置刷新指示器的颜色数组
+        progressBackgroundColor="#ffffff" // 可选，设置进度背景色
+      />
+    );
 
-  * **`style`**: stylesheet of component, set width/height/flex/backgroudColor... etc
-  * **`onPulling`**: handle function when `pulling`
-  * **`onPullOk`**: handle function when `pullok`
-  * **`onPullRelease`**: handle function when `pullrelease`, access 1 argument: `resolve`. You should invoke `resolve()` in the end.
-  * **`topIndicatorRender`**: top indicator render function, access 4 argument: `ispulling`, `ispullok`, `ispullrelease`, `gesturePosition`. you can design yourself topIndicator with animation when pulling using `gesturePosition`.
-  * **`topIndicatorHeight`**: top indicator height, require if define topIndicatorRender
-  * **`isPullEnd`**: whether release pull, if true, will hide top indicator, not require
+    return (
+      <View style={[styles.container]}>
+      <PullList style={{width: Dimensions.get('window').width}}
+            onPulling={onPulling}
+            onPullOk={onPullOk}
+            isPullEnd={true}
+            onPullRelease={onPullRelease}
+            onPushing={onPushing}
+            topIndicatorRender={topIndicatorRender}
+            topIndicatorHeight={60}
+            pageSize={5}
+            scrollViewProps={{
+                scrollEventThrottle: 16, // 减少滚动事件的延迟，提高滚动的响应性
+              }}
+            initialListSize={5}
+            onEndReached={loadMore}
+            onEndReachedThreshold={60}
+            renderItem={renderRow}
+            ListFooterComponent={renderFooter}
+            ListHeaderComponent={renderHeader}
+            data={stateList}
+            keyExtractor={(item:any) => item.id}
+          />
+      </View>
+    );
+};
 
-**Push up props for `PullView` &amp; `PullList`**
+const styles = StyleSheet.create({
+ container: {
+    flex: 1,
+    flexDirection: 'column',
+    backgroundColor: '#F5FCFF',
+    width:'100%',
+    height:'100%',
+    overflow: 'scroll'
+  },
+  welcome: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
+  },
+  instructions: {
+    textAlign: 'center',
+    color: '#333333',
+    marginBottom: 5,
+  },
+});
 
-  * **`onPushing`**: handle function when pushing up, access 1 argument: `gesturePosition`. gesturePosition contain value {x,y}. gesturePosition.y > 0 when pulling down, gesturePosition.y < 0 when pushing up.
+export default PullListDemo;
 
-**Just for `PullView`, refreshcontrol props** support onRefresh & refreshing if you want to use refreshcontrol like scrollview.
+```
 
-  * **`onRefresh`**: Called when the view starts refreshing
-  * **`refreshing`**: Whether the view should be indicating an active refresh.
+## 约束与限制
 
-## Licensed
-  MIT License
+### 兼容性
 
-# 中文说明请参见
+要使用此库，需要使用正确的 React-Native 和 RNOH 版本。另外，还需要使用配套的 DevEco Studio 和 手机 ROM。
 
-  https://github.com/greatbsky/react-native-pull/wiki
+请到三方库相应的 Releases 发布地址查看 Release 配套的版本信息：[ Releases](https://github.com/react-native-oh-library/react-native-pull/releases)
+
+本文档内容基于以下版本验证通过：
+
+1. RNOH：0.72.20; SDK：HarmonyOS NEXT Developer Preview2; IDE：DevEco Studio 5.0.3.200; ROM：3.0.0.21;
+
+## 属性配置项
+
+> [!tip] "Platform"列表示该属性在原三方库上支持的平台。
+
+> [!tip] "HarmonyOS Support"列为 yes 表示 HarmonyOS 平台支持该属性；no 则表示不支持；partially 表示部分支持。使用方法跨平台一致，效果对标 iOS 或 Android 的效果。
+
+**`PullView` & `PullList` 下拉效果属性**
+
+| Name                 | Description                                                  | Type     | Required | Platform    | HarmonyOS Support |
+| -------------------- | ------------------------------------------------------------ | -------- | -------- | ----------- | ----------------- |
+| `style`              | 设置组件样式，比如可以设置width/height/backgroudColor等      | Style    | no       | android,ios | yes               |
+| `onPulling`          | 处于`pulling`状态时执行的方法                                | function | no       | android,ios | yes               |
+| `onPullOk`           | 处于`pullok`状态时执行的方法                                 | function | no       | android,ios | yes               |
+| `onPullRelease`      | 处于`pullrelease`状态时执行的方法，接受一个参数：`resolve`，最后执行完操作后应该调用`resolve()`。 | function | no       | android,ios | yes               |
+| `onPushing`          | 当从下往上推时执行的方法，接受一个参数：`gesturePosition`。gesturePosition是json格式{x, y}对象，当从上往下拉时gesturePosition.y > 0，当从下往上推时gesturePosition.y < 0。 | function | no       | android,ios | yes               |
+| `topIndicatorRender` | 顶部刷新指示组件的渲染方法, 接受4个参数: `ispulling`, `ispullok`, `ispullrelease`，`gesturePosition`，你可以使用`gesturePosition`定义动画头部。 | function | no       | android,ios | yes               |
+| `topIndicatorHeight` | 顶部刷新指示组件的高度, 若定义了topIndicatorRender则同时需要此属性 | number   | no       | android,ios | yes               |
+| `isPullEnd`          | 是否已经下拉结束，若为true则隐藏顶部刷新指示组件，非必须     | boolean  | no       | android,ios | yes               |
+| `onRefresh`          | 开始刷新时调用的方法                                         | function | no       | android,ios | yes               |
+| `refreshing`         | 指示是否正在刷新                                             | function | no       | android,ios | yes               |
+
+## 遗留问题
+
+## 其他
+
+## 开源协议
+
+本项目基于 [The MIT License (MIT)](https://github.com/greatbsky/react-native-pull/blob/master/LICENSE) ，请自由地享受和参与开源。
+
+<!-- {% endraw %} -->
