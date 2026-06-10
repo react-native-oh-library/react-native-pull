@@ -27,7 +27,7 @@ react-native-pull包含两个（`PullView` & `PullList`）可以实现`下拉刷
 
 ## 安装与使用
 
-请到三方库的地址查看配套的版本信息：[@react-native-oh-tpl/react-native-pull/releases](https://github.com/react-native-oh-library/react-native-pull/releases)，并下载适用版本的 tgz 包。
+请到三方库的地址查看配套的版本信息：[@react-native-ohos/react-native-pull/releases](https://github.com/react-native-oh-library/react-native-pull/releases)，并下载适用版本的 tgz 包。
 
 进入到工程目录并输入以下命令：
 
@@ -38,13 +38,13 @@ react-native-pull包含两个（`PullView` & `PullList`）可以实现`下拉刷
 #### **npm**
 
 ```bash
-npm install @react-native-oh-tpl/react-native-pull@file:#
+npm install @react-native-ohos/react-native-pull@file:#
 ```
 
 #### **yarn**
 
 ```bash
-yarn add @react-native-oh-tpl/react-native-pull@file:#
+yarn add @react-native-ohos/react-native-pull@file:#
 ```
 
 <!-- tabs:end -->
